@@ -1,16 +1,11 @@
 <?php
 include_once("../partials/links-css.php");
-include_once("../class/Buku.php");
-include_once("../class/User.php");
+include_once("../class/Pesan.php");
 
 session_start();
 
-$buku = new Buku;
-$data_buku = $buku->all();
-
-$user = new User;
-$data_user = $user->find($_SESSION["id"]);
-
+$pesan = new Pesan;
+$data_pesan = $pesan->all();
 ?>
 
 <!DOCTYPE html>
@@ -20,7 +15,7 @@ $data_user = $user->find($_SESSION["id"]);
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User</title>
+    <title>Pesan | User</title>
 </head>
 
 <body>
@@ -36,26 +31,27 @@ $data_user = $user->find($_SESSION["id"]);
             <table class="table table-dark table-striped">
                 <thead>
                     <th>No</th>
-                    <th>Judul Buku</th>
-                    <th>Kategori</th>
-                    <th>Penerbit</th>
-                    <th>Pengarang</th>
-                    <th>Tahun Terbit</th>
-                    <th>Stock</th>
-                    <th>Aksi</th>
+                    <th>Penerima</th>
+                    <th>Pengirim</th>
+                    <th>Judul</th>
+                    <th>Isi</th>
+                    <th>Status</th>
+                    <th>Tanggal Kirim</th>
+                    <th>Aksi</th>       
                 </thead>
+
                 <?php
-                foreach ($data_buku as $key => $db) {
+                foreach ($data_pesan as $key => $dpsn) {
                 ?>
                     <tbody>
                         <td><?= $key + 1 ?></td>
-                        <td><?= $db["judul"] ?></td>
-                        <td><?= $db["kategori"] ?></td>
-                        <td><?= $db["penerbit"] ?></td>
-                        <td><?= $db["pengarang"] ?></td>
-                        <td><?= $db["tahun_terbit"] ?></td>
-                        <td><?= $db["stock"] ?></td>
-                        <td><a href="form-peminjaman.php?id_buku=<?= $db["id"] ?>">Pinjam</a></td>
+                        <td><?= $dpsn["Penerima_id"] ?></td>
+                        <td><?= $dpsn["Pengirim_id"] ?></td>
+                        <td><?= $dpsn["judul"] ?></td>
+                        <td><?= $dpsn["isi"] ?></td>
+                        <td><?= $dpsn["status"] ?></td>
+                        <td><?= $dpsn["tanggal_kirim"] ?></td>
+                        <td><a href="form_peminjaman.php?id_buku=<?= $db["id"] ?>">Pinjam</a></td>
                     </tbody>
                 <?php
                 }
