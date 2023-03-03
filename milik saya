@@ -1,33 +1,31 @@
-<?php
-include_once("../partials/links-css.php");
-?>
+<?php 
+include_once('Database.php');
 
-<!DOCTYPE html>
-<html lang="en">
+class Login extends Database{
+    public function authLogin($data){
+        $username = $data["username"];
+        $password = $data["password"];
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+        $sql = "SELECT * FROM user WHERE username = '$username'";
 
-<body>
+        $cek_user= $this->db->query($sql)->fetch_assoc();
 
-    <div class="wrapper d-flex align-items-stretch">
-        <!-- include sidebar -->
-        <?php include_once("../partials/sidebar-user.php") ?>
-        <!-- Page Content  -->
-        <div id="content" class="p-4 p-md-5">
-            <!-- include navbar -->
-            <?php include_once("../partials/navbar-user.php") ?>
-            <!-- ISI KONTEN -->
+        if(!empty($cek_user)){
+            if($password==$cek_user['password']){
+                session_start();
+                $_SESSION['id']=$cek_user['id'];
 
-        </div>
-    </div>
-</body>
+                if($cek_user['role']=='user'){
+                    header("location: user/index.php");
+                }else if($cek_user['role']=='admin'){
+                    header("location: admin/index.php");
+                }
+            }else{
+                echo "<script>alert('maaf password salah!');</script>";
+            }
+        }else{
+            echo "Gagal";
+        }
 
-</html>
-<?php
-include_once("../partials/link-script.php");
-?>
+    }
+}
