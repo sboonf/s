@@ -1,0 +1,31 @@
+<?php 
+include_once('Database.php');
+
+class Login extends Database{
+    public function authLogin($data){
+        $username = $data["username"];
+        $password = $data["password"];
+
+        $sql = "SELECT * FROM user WHERE username = '$username'";
+
+        $cek_user= $this->db->query($sql)->fetch_assoc();
+
+        if(!empty($cek_user)){
+            if($password==$cek_user['password']){
+                session_start();
+                $_SESSION['id']=$cek_user['id'];
+
+                if($cek_user['role']=='user'){
+                    header("location: user/index.php");
+                }else if($cek_user['role']=='admin'){
+                    header("location: admin/index.php");
+                }
+            }else{
+                echo "<script>alert('maaf password salah!');</script>";
+            }
+        }else{
+            echo "Gagal";
+        }
+
+    }
+}
